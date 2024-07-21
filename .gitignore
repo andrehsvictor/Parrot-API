@@ -34,3 +34,4 @@ build/
 
 .env
 META-INF/
+keys/
