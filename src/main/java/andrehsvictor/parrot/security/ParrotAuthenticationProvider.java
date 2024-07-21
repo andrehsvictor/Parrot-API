@@ -1,5 +1,6 @@
 package andrehsvictor.parrot.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.DisabledException;
@@ -13,14 +14,15 @@ import org.springframework.stereotype.Component;
 import andrehsvictor.parrot.entity.User;
 import andrehsvictor.parrot.exception.ParrotException;
 import andrehsvictor.parrot.service.UserService;
-import lombok.RequiredArgsConstructor;
 
 @Component
-@RequiredArgsConstructor
 public class ParrotAuthenticationProvider implements AuthenticationProvider {
 
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
