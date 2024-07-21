@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import andrehsvictor.parrot.security.ParrotAuthenticationProvider;
@@ -21,6 +22,9 @@ public class SecurityConfig {
     @Autowired
     private ParrotAuthenticationProvider parrotAuthenticationProvider;
 
+    @Autowired
+    private JwtDecoder jwtDecoder;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -28,12 +32,13 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/signin").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**",
                                 "/swagger-ui.html")
                         .permitAll()
-                        .anyRequest().authenticated());
+                        .anyRequest().authenticated())
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder)));
         return http.build();
     }
 
