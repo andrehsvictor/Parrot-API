@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -30,7 +32,11 @@ public class RefreshToken {
     private Long id;
 
     private String token;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
+    
     private LocalDateTime createdAt;
     private LocalDateTime expiresAt;
 
